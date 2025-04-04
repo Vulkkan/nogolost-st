@@ -1,1 +1,1 @@
-API_TOKEN = "hf_xxxx"
+API_TOKEN = ""
