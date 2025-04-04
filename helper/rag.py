@@ -2,13 +2,10 @@ import requests
 # from helper.key import API_TOKEN
 
 
-API_URL = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
-
-# API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base"
-
+# API_URL = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
+API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base"
 # Kinda works
 # API_URL = "https://api-inference.huggingface.co/models/microsoft/Phi-3-mini-4k-instruct"
-
 
 # HEADERS = {"Authorization": f"Bearer {API_TOKEN}"}
 HEADERS = {"Authorization": ""}
