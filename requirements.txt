@@ -1,0 +1,6 @@
+streamlit
+streamlit_chat
+spacy
+torch
+transformers
+pandas
