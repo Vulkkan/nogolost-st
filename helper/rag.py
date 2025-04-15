@@ -1,7 +1,5 @@
 import requests
 import streamlit as st
-# import re
-# from openai import OpenAI
 import os
 import json
 from dotenv import load_dotenv
@@ -10,9 +8,9 @@ from dotenv import load_dotenv
 load_dotenv()
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
-OPENROUTER_TOKEN = os.getenv("OPENROUTER_API_KEY")
+# OPENROUTER_TOKEN = os.getenv("OPENROUTER_API_KEY")
 # MODEL = os.getenv("MODEL")
-# OPENROUTER_TOKEN = st.session_state.api_token
+OPENROUTER_TOKEN = st.session_state.api_token
 MODEL = st.session_state.model
 
 HEADERS = {

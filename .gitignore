@@ -4,3 +4,4 @@
 /.vscode
 /.devcontainer
 /helper/__pycache__/
+.env
