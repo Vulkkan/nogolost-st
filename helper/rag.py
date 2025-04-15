@@ -5,8 +5,33 @@ import json
 
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
-OPENROUTER_TOKEN = st.session_state.api_token if st.session_state.api_token else 'Null'
-MODEL = st.session_state.model
+OPENROUTER_TOKEN = st.session_state.get("api_token", "Null")
+MODEL = st.session_state.get("model", "meta-llama/llama-4-maverick")
+
+if "api_token" not in st.session_state or not st.session_state.api_token:
+    st.error("⚠️ No API token found. Please go back and enter your key.")
+    st.stop()
+
+
+# rag.py
+import streamlit as st
+
+def get_headers():
+    token = st.session_state.get("api_token")
+    if not token:
+        st.error("API token missing. Please go back and enter your key.")
+        st.stop()
+
+    return {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
+    }
+
+def get_model():
+    return st.session_state.get("model", "meta-llama/llama-4-maverick")
+
+
+
 
 HEADERS = {
     "Authorization": f"Bearer {OPENROUTER_TOKEN}",
