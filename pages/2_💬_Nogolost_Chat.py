@@ -9,6 +9,11 @@ st.markdown(custom_css(), unsafe_allow_html=True)
 st.markdown(f"<h1 class='colored-subtitle''>💬 Nogolost Chat</h1>", unsafe_allow_html=True)
 st.write('')
 
+
+if "api_token" not in st.session_state or not st.session_state.api_token:
+    st.error("⚠️ No API token found. Please go back and enter your key.")
+    st.stop()
+
 # # Require token
 # if "api_token" not in st.session_state:
 #     st.warning("⚠️ Please set your Hugging Face API token in the previous page.")

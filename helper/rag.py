@@ -8,9 +8,6 @@ API_URL = "https://openrouter.ai/api/v1/chat/completions"
 OPENROUTER_TOKEN = st.session_state.get("api_token", "Null")
 MODEL = st.session_state.get("model", "meta-llama/llama-4-maverick")
 
-if "api_token" not in st.session_state or not st.session_state.api_token:
-    st.error("⚠️ No API token found. Please go back and enter your key.")
-    st.stop()
 
 
 # rag.py
