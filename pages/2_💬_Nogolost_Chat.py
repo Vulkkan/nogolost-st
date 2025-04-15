@@ -10,9 +10,6 @@ st.markdown(f"<h1 class='colored-subtitle''>💬 Nogolost Chat</h1>", unsafe_all
 st.write('')
 
 
-if "api_token" not in st.session_state or not st.session_state.api_token:
-    st.error("⚠️ No API token found. Please go back and enter your key.")
-    st.stop()
 
 # # Require token
 # if "api_token" not in st.session_state:
