@@ -8,8 +8,14 @@ from dotenv import load_dotenv
 load_dotenv()
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
-# OPENROUTER_TOKEN = os.getenv("OPENROUTER_API_KEY")
-# MODEL = os.getenv("MODEL")
+# MODEL = 'deepseek/deepseek-r1-distill-llama-8b'
+
+# if "api_token" not in st.session_state:
+#     st.session_state.api_token = None
+
+# if "model" not in st.session_state:
+#     st.session_state.model = "deepseek/deepseek-r1-distill-llama-8b"
+
 OPENROUTER_TOKEN = st.session_state.api_token
 MODEL = st.session_state.model
 
@@ -40,8 +46,8 @@ def extract_answer(generated_text):
     return generated_text.strip()
 
 
-def query_openrouter(prompt, context, model="openai/gpt-3.5-turbo"):
-    full_prompt = f"""You are an AI assistant. Based on the following context, provide a complete and detailed response.
+def query_openrouter(prompt, context, model=MODEL):
+    full_prompt = f"""You are an AI assistant. Based on the following context, provide a complete and detailed response, which are directions.
 
     Context:
     {context}

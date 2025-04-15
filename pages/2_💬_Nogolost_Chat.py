@@ -25,7 +25,6 @@ def load_data():
 rag_data = load_data()
 
 
-
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
