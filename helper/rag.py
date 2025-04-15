@@ -2,19 +2,9 @@ import requests
 import streamlit as st
 import os
 import json
-from dotenv import load_dotenv
 
 
-load_dotenv()
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
-
-# MODEL = 'deepseek/deepseek-r1-distill-llama-8b'
-
-# if "api_token" not in st.session_state:
-#     st.session_state.api_token = None
-
-# if "model" not in st.session_state:
-#     st.session_state.model = "deepseek/deepseek-r1-distill-llama-8b"
 
 OPENROUTER_TOKEN = st.session_state.api_token
 MODEL = st.session_state.model
