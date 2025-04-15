@@ -1,12 +1,11 @@
 import requests
 import streamlit as st
-import os
 import json
 
 
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
-OPENROUTER_TOKEN = st.session_state.api_token
+OPENROUTER_TOKEN = st.session_state.api_token if st.session_state.api_token else 'Null'
 MODEL = st.session_state.model
 
 HEADERS = {
