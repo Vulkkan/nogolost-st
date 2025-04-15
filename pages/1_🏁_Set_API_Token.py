@@ -1,19 +1,37 @@
 import streamlit as st
-from helper.key import API_TOKEN
+from res.styles import custom_css
 
-st.title("Set Hugging Face API Token")
 
-# Prompt user for the token
-token_input = st.text_input("Enter your Hugging Face API token:", type="password")
+st.markdown(custom_css(), unsafe_allow_html=True)
+
+st.markdown(f"<h1 class='colored-subtitle''>Configuration</h1>", unsafe_allow_html=True)
+st.write('')
+
+# --------------------- Model & key --------------------- #
+model_selection = st.selectbox("Select model", [
+    'meta-llama/llama-4-maverick',
+    'deepseek/deepseek-r1-distill-llama-70b',
+    'meta-llama/llama-4-scout',
+
+    'deepseek/deepseek-r1-distill-llama-8b', 
+    'deepseek/deepseek-r1-distill-qwen-1.5b',
+    'meta-llama/llama-3.2-1b-instruct',
+    'mistral/ministral-8b',
+])
+token_input = st.text_input("Enter the corresponding API key", placeholder='sk-or-v1-')
+
 
 # Save the token only if button is clicked
 if st.button("Proceed", type="primary"):
-    if token_input:
-        API_TOKEN = token_input
+    if token_input and model_selection:
+        # API_TOKEN = token_input
         st.session_state.api_token = token_input
-        st.success("API token saved successfully!")
+        st.session_state.model = model_selection
 
-        # 🔁 Defer switch_page until after token is saved
+        st.success("Good to go!")
+
+        # Defer switch_page until after token is saved
         st.switch_page("pages/2_💬_Nogolost_Chat.py")
     else:
-        st.warning("⚠️ Please enter a token before proceeding.")
+        st.warning("⚠️ Please enter a token to proceed!")
+

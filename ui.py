@@ -3,12 +3,16 @@ from res.styles import custom_css
 
 
 st.set_page_config(page_title="Nogolost", layout="wide")
-
-st.title("Welcome to Nogolost RAG App")
-
 st.markdown(custom_css(), unsafe_allow_html=True)
 
+st.markdown(f"<h1 class='dash-title''>Nogolost</h1>", unsafe_allow_html=True)
+st.markdown(f"<h1 class='colored-text''>Your travel virtual assistant</h1>", unsafe_allow_html=True)
 
+
+st.write(' '); st.write(' '); st.write(' '); st.write(' ')
+st.write(' '); st.write(' '); st.write(' '); st.write(' ')
+
+# --------------------- Go --------------------- #
 go = st.button('Proceed', type='primary')
 
 if go:

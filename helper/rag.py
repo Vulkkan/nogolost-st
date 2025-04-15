@@ -1,18 +1,25 @@
 import requests
-# from helper.key import API_TOKEN
+import streamlit as st
+# import re
+# from openai import OpenAI
+import os
+import json
+from dotenv import load_dotenv
 
 
-# API_URL = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
-API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base"
-# Kinda works
-# API_URL = "https://api-inference.huggingface.co/models/microsoft/Phi-3-mini-4k-instruct"
+load_dotenv()
+API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
-# HEADERS = {"Authorization": f"Bearer {API_TOKEN}"}
-HEADERS = {"Authorization": ""}
+OPENROUTER_TOKEN = os.getenv("OPENROUTER_API_KEY")
+# MODEL = os.getenv("MODEL")
+# OPENROUTER_TOKEN = st.session_state.api_token
+MODEL = st.session_state.model
 
-def set_api_token(token):
-    HEADERS["Authorization"] = f"Bearer {token}"
-    
+HEADERS = {
+    "Authorization": f"Bearer {OPENROUTER_TOKEN}",
+    "Content-Type": "application/json"
+}
+
 
 def chunkData(file) -> list:
     with open(file) as f:
@@ -30,62 +37,46 @@ def chunkData(file) -> list:
 
 
 def extract_answer(generated_text):
-    """
-    Given the full LLM output, extract just the answer part.
-    """
     if "Answer:" in generated_text:
         return generated_text.split("Answer:")[-1].strip()
     return generated_text.strip()
 
 
-# def answers(context, prompt):
-#     instruction = (
-#         f"Based on the following context, give complete and detailed directions to the user.\n\n"
-#         f"Context:\n{context}\n\n"
-#         f"User Question: {prompt}\n\n"
-#         f"Answer:"
-#     )
+def query_openrouter(prompt, context, model="openai/gpt-3.5-turbo"):
+    full_prompt = f"""You are an AI assistant. Based on the following context, provide a complete and detailed response.
 
-#     data = {
-#         "inputs": instruction,
-#         "parameters": {
-#             "temperature": 0.7,
-#             "max_new_tokens": 250,
-#             "do_sample": True,
-#         }
-#     }
+    Context:
+    {context}
 
-#     response = requests.post(API_URL, headers=HEADERS, json=data)
+    User Question: {prompt}
+    Answer:"""
 
-#     if response.status_code != 200:
-#         return (
-#             f"Error: {response.status_code}. Response: {response.text}",
-#             0.0
-#         )
+    payload = {
+        "model": model,
+        "messages": [
+            {"role": "user", "content": full_prompt}
+        ],
+        "temperature": 0.5
+    }
 
-#     try:
-#         result = response.json()
-#         generated_text = result[0]['generated_text']
-#         return generated_text, 1.0
-#     except Exception as e:
-#         return f"Error parsing response: {e}", 0.0
-
-def answers(context, prompt):
-    data = {"inputs": f"Based on the following context, give complete and detailed directions to the user.\n\nContext:\n{context}\n\nUser Question: {prompt}"}
-    import requests
-    response = requests.post(API_URL, headers=HEADERS, json=data)
+    response = requests.post(API_URL, headers=HEADERS, data=json.dumps(payload))
     if response.status_code != 200:
         return f"Error: {response.status_code} - {response.text}", 0.0
-    result = response.json()
-    if isinstance(result, list) and len(result) > 0 and "generated_text" in result[0]:
-        return result[0]["generated_text"], 1.0
-    return str(result), 0.5
 
-def reply(prompt, context_parts) -> str:
+    result = response.json()
+    try:
+        content = result['choices'][0]['message']['content']
+        return extract_answer(content), 1.0
+    except Exception as e:
+        return f"Parsing Error: {str(e)}", 0.0
+
+
+def reply(prompt, context_parts):
     answers_dict = {}
     for i, part in enumerate(context_parts):
-        answer, confidence = answers(part, prompt)
+        answer, confidence = query_openrouter(prompt, part)
         answers_dict[f"Chunk {i+1}"] = {answer: confidence}
     best_answer = max(answers_dict.values(), key=lambda x: list(x.values())[0])
     best_text = list(best_answer.keys())[0]
     return best_text
+
